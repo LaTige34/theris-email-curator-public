@@ -1,0 +1,49 @@
+# senders.yaml.example — template fournisseurs critiques
+#
+# Whitelist de domaines émetteurs identifiés comme "courriers officiels" ou
+# "fournisseurs stratégiques" qui doivent TOUJOURS être routés vers un thème
+# précis et JAMAIS en SPAM.
+#
+# Utilisation :
+#   - Matching exact (tolérant sous-domaines *.example.com)
+#   - Complété par la regex de `apply_labels` pour matcher les mots-clés
+#     dans subcategory/subject.
+#
+# Copier vers `senders.yaml` et adapter à votre contexte. Le fichier
+# `senders.yaml` réel est gitignoré par défaut.
+
+critical_senders:
+
+  # Juridique / Administration de votre société
+  - domain: legalplace.fr
+    theme: WORK_MAIN
+    notes: "Domiciliation + courriers juridiques"
+  - domain: inpi.fr
+    theme: WORK_MAIN
+    notes: "Marques, brevets, KBIS"
+
+  # Banque / Comptabilité
+  - domain: your-bank.example.com
+    theme: WORK_MAIN
+    notes: "Relevés bancaires pro"
+
+  # Paie / RH / URSSAF (remplacer par vos prestataires réels)
+  - domain: urssaf.fr
+    theme: HR
+    notes: "Cotisations sociales salariés"
+  - domain: votre-logiciel-paie.example.com
+    theme: HR
+    notes: "Paie mensuelle"
+
+  # Client principal / partenaire stratégique (tag WORK_OPS)
+  - domain: client-principal.example.com
+    theme: WORK_OPS
+    notes: "Site opérationnel principal"
+
+  # Perso / administration (PERSONAL)
+  - domain: ameli.fr
+    theme: PERSONAL
+    notes: "Sécurité sociale"
+  - domain: impots.gouv.fr
+    theme: PERSONAL
+    notes: "Impôts personnels"

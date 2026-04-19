@@ -1,0 +1,1 @@
+"""theris-email-curator tests."""

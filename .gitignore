@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local config (contient vos fournisseurs critiques réels)
+lib/senders.yaml
+
+# Shadow mode runtime (JSONL journaliers)
+shadow_out/
+
+# Audit runtime
+*.jsonl
+!tests/fixtures/*.jsonl
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
