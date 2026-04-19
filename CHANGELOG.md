@@ -5,12 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] — 2026-04-19
+
+### Fixed
+
+- Anonymization: removed 9 critical/high leaks identified by external audit
+  (renamed `lib/neo_labels.py` → `lib/labels.py`, purged internal codenames,
+  neutralized LICENSE / README / SKILL.md author metadata, generalized
+  regex patterns, replaced fixture strings with neutral placeholders).
+
 ## [0.1.0] — 2026-04-19
 
 ### Added
 
 - Initial public release (MIT license) — code stripped down and anonymized
-  from the THERIS internal `theris-email-curator` skill.
+  from an internal `email-curator` skill.
 - `SKILL.md` in Anthropic Claude Skills format (YAML frontmatter).
 - Classifier email LLM (prompt FR verrouillé + schema JSON strict +
   anti-injection + fallback safe).
@@ -26,9 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `lib/shadow_out.py` : appender JSONL pour shadow mode (comparaison
   pipelines) avec merge "last-wins-non-empty" par `thread_id`.
 - Script `scripts/rotate_shadow_out.sh` — purge journalière shadow_out/ > 30j.
-- 76 tests pytest offline (zero I/O réseau, zero clé API) :
+- 75 tests pytest offline (zero I/O réseau, zero clé API) :
   - 16 tests classifier (validation + injection + fallbacks)
-  - 14 tests label router (routing + anti-FP)
+  - 13 tests label router (routing + anti-FP)
   - 12 tests draft generator (templates + AI Act footer)
   - 12 tests safety (retry + breaker + mask_pii + wrapper)
   - 22 tests shadow_out (append + merge + phi_detected OR logique)

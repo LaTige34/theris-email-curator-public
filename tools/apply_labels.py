@@ -29,28 +29,22 @@ _SKILL_ROOT = Path(__file__).resolve().parents[1]
 if str(_SKILL_ROOT) not in sys.path:
     sys.path.insert(0, str(_SKILL_ROOT))
 
-from lib.neo_labels import (  # noqa: E402
-    LABEL_BELLEVISTE,  # alias WORK_OPS
+from lib.labels import (  # noqa: E402
     LABEL_DRAFT,
-    LABEL_PERSO,  # alias PERSONAL
+    LABEL_HR,
+    LABEL_PERSONAL,
     LABEL_PROCESSED,
-    LABEL_RH,  # alias HR
     LABEL_SPAM,
-    LABEL_THERIS,  # alias WORK_MAIN
     LABEL_URGENT,
     LABEL_WORK_MAIN,
     LABEL_WORK_OPS,
-    LABEL_HR,
-    LABEL_PERSONAL,
 )
 from lib.shadow_out import record_labels as _record_labels  # noqa: E402
 
 # Patterns thématiques — exemples génériques, à adapter à votre secteur.
-# Les alias historiques (BELLEVISTE, THERIS, RH) sont maintenus pour compat
-# avec les tests shadow mode.
 PATTERNS_WORK_OPS = re.compile(
     r"\b(idec|medecin.?coord|residents?\s+(?:age|dependants?)|"
-    r"ars\s+(?:paca|occitanie|signalement|declaration)|cnsa)\b",
+    r"ars\s+\w+|cnsa)\b",
     re.IGNORECASE,
 )
 PATTERNS_HR = re.compile(
@@ -61,7 +55,7 @@ PATTERNS_HR = re.compile(
 )
 PATTERNS_WORK_MAIN = re.compile(
     r"\b(prospect|pilote|investisseur|incubateur|scaleway|ovhcloud?\s+(?:hds|scale)|"
-    r"scalingo|postgrest|supabase|logiciel\s+(?:ehpad|metier)|"
+    r"postgrest|supabase|logiciel\s+(?:ehpad|metier)|"
     r"domiciliation\s+(?:sasu|societe|soci[ée]t[ée])|"
     r"legalplace|legal-place|greffe|inpi|bodacc|kbis|"
     r"qonto|stripe\s+account|urssaf\s+(?:entrep|societ)|"
@@ -71,12 +65,6 @@ PATTERNS_WORK_MAIN = re.compile(
 
 # Domaines émetteurs → thème WORK_MAIN direct
 WORK_MAIN_DOMAINS: set[str] = set()
-
-# Alias retro-compat (pour tests golden qui utilisent encore l'ancien nom)
-_BELLEVISTE_PATTERNS = PATTERNS_WORK_OPS
-_RH_PATTERNS = PATTERNS_HR
-_THERIS_PATTERNS = PATTERNS_WORK_MAIN
-_THERIS_DOMAINS = WORK_MAIN_DOMAINS
 
 
 @dataclass

@@ -43,7 +43,7 @@ fournisseurs dans `lib/senders.yaml`** :
 - **Juridique / Administration** : `legalplace.fr`, `inpi.fr`,
   `greffe-tc-*.fr`, `infogreffe.fr`, `bodacc.fr`, `urssaf.fr`,
   `impots.gouv.fr`, `dgfip.finances.gouv.fr`
-- **Infra / Hébergement** : `scalingo.com`, `ovhcloud.com`, `ovh.net`,
+- **Infra / Hébergement** : `ovhcloud.com`, `ovh.net`,
   `hetzner.com`, `scaleway.com`
 - **Banque / Paiement** : `qonto.com`, `stripe.com`
 - **Énergie / Télécom pro** : `edf.fr`, `engie.fr`, `veolia.fr`,

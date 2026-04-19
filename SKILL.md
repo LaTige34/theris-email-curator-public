@@ -1,9 +1,9 @@
 ---
 name: email-curator
 description: Triage d'emails pour fondateurs solo et opérateurs — classifie chaque message (URGENT/ACTION/INFO/SPAM) via un LLM (Claude Haiku 4.5 ou Mistral Small), applique des labels Gmail sémantiques, génère un brouillon FR pro avec footer AI Act art. 50, et envoie un digest Telegram premium. Safety net complet (retry + circuit breaker + alerting) et redaction PII systématique avant logs et alertes. Use when the user wants to triage their Gmail inbox, auto-draft replies to recurring email patterns, or monitor high-signal emails via Telegram.
-version: 0.1.0
+version: 0.1.1
 license: MIT
-author: THERIS — open-sourced by Mathieu Desobry
+author: Open Source Contributors
 tags:
   - email
   - gmail
@@ -15,7 +15,7 @@ tags:
   - mistral
   - ai-act
   - gdpr
-repository: https://github.com/LaTige34/theris-email-curator-public
+repository: https://github.com/YourName/email-curator-public
 ---
 
 # email-curator
@@ -32,11 +32,11 @@ solo ou un opérateur qui reçoit 50-200 mails/jour et veut :
 ## Installation
 
 ```bash
-git clone https://github.com/LaTige34/theris-email-curator-public.git
-cd theris-email-curator-public
+git clone https://github.com/YourName/email-curator-public.git
+cd email-curator-public
 python3 -m venv .venv && . .venv/bin/activate
 pip install pytest pyyaml
-pytest tests/ -v  # 76 tests, doivent tous passer
+pytest tests/ -v  # 75 tests, doivent tous passer
 ```
 
 ## Composition
@@ -51,7 +51,7 @@ pytest tests/ -v  # 76 tests, doivent tous passer
 - `tools/build_digest.py` — digest Markdown Telegram avec emojis contextuels
 - `lib/safety.py` — retry exponentiel + circuit breaker + alerting + audit log
 - `lib/shadow_out.py` — shadow mode JSONL (comparaison pipeline v1 vs v2)
-- `lib/neo_labels.py` — catalogue labels (WORK_MAIN / WORK_OPS / HR / PERSONAL)
+- `lib/labels.py` — catalogue labels (WORK_MAIN / WORK_OPS / HR / PERSONAL)
 - `lib/senders.yaml.example` — template fournisseurs critiques (à copier)
 - `scripts/rotate_shadow_out.sh` — purge quotidienne shadow_out/ > 30j
 
@@ -95,11 +95,11 @@ apply_labels → Gmail curator/URGENT | curator/DRAFT-REQUIRED | curator/SPAM
 
 ## Tests
 
-76 tests pytest offline (zero I/O réseau, zero clé API requise) :
+75 tests pytest offline (zero I/O réseau, zero clé API requise) :
 
 ```
 tests/test_classifier.py         — 16 tests validation schema + anti-injection
-tests/test_label_router.py       — 14 tests routing + anti-faux-positif
+tests/test_label_router.py       — 13 tests routing + anti-faux-positif
 tests/test_draft_generator.py    — 12 tests templates + AI Act footer
 tests/test_circuit_breaker.py    — 12 tests safety (retry + breaker + mask)
 tests/test_shadow_out.py         — 22 tests shadow JSONL + merge last-wins
@@ -116,5 +116,5 @@ tests/test_shadow_out.py         — 22 tests shadow JSONL + merge last-wins
 
 ## License
 
-MIT — voir `LICENSE`. Open-sourcé par THERIS (fondateur Mathieu Desobry)
-dans le cadre de la contribution à l'écosystème Claude Skills / Agent Skills.
+MIT — voir `LICENSE`. Open-sourcé dans le cadre de la contribution à
+l'écosystème Claude Skills / Agent Skills.

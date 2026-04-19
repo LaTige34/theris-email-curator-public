@@ -58,7 +58,6 @@ _THEME_EMOJI: dict[str, str] = {
     "prospect": "🎯",
     "pilote": "🎯",
     "investisseur": "💼",
-    "scalingo": "🟦",
     "ovh": "🟦",
     "hetzner": "🟦",
     # Santé / EHPAD (exemple — à adapter)

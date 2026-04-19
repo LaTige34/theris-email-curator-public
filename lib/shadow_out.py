@@ -4,8 +4,8 @@ Permet à un système de "juge" externe (LLM ou règles) de rejouer la journée
 et comparer deux pipelines (baseline vs nouvelle implémentation) en écrivant
 chaque classification / draft / routage dans `shadow_out/YYYY-MM-DD.jsonl`.
 
-Format retenu : superset du schéma minimal consommé par
-`load_hermes_shadow_outputs` dans shadow_judge.py §348-421 :
+Format retenu : superset du schéma minimal consommé par un loader
+externe `load_skill_shadow_outputs` (exemple de judge externe) :
 
     - thread_id        (clé de jointure)
     - category         (URGENT|ACTION|INFO|SPAM|UNKNOWN)
@@ -15,7 +15,7 @@ Format retenu : superset du schéma minimal consommé par
     - phi_detected     (bool)
     - should_draft     (bool)
     - telegram_priority
-    - label_applied    (ex "NEO/URGENT, NEO/THERIS")
+    - label_applied    (ex "curator/URGENT, curator/WORK-MAIN")
     - draft_preview    (≤ 400 chars, masqué PHI)
     - timestamp        (ISO 8601 UTC)
 
@@ -91,7 +91,7 @@ def _email_id_hash(thread_id: str) -> str:
 
 def _extract_theme(labels: list[str]) -> str:
     """Extrait le thème depuis une liste de labels routés."""
-    from lib.neo_labels import THEME_LABELS
+    from lib.labels import THEME_LABELS
 
     for lab in labels:
         if lab in THEME_LABELS:
@@ -242,8 +242,7 @@ def append_shadow_jsonl(
     déjà aujourd'hui pour ce `thread_id`, les champs non-vides du record
     précédent sont conservés (last-wins-non-empty). Cela garantit que le
     dernier row écrit contient TOUT (classify + labels + draft), condition
-    nécessaire pour le loader `shadow_judge.load_hermes_shadow_outputs`
-    (qui fait last-wins par thread_id).
+    nécessaire pour un loader externe qui fait last-wins par thread_id.
 
     Retourne le path écrit. Crée le dossier si absent. Ne lève pas si
     l'écriture échoue (shadow mode ne doit PAS casser le pipeline prod) :

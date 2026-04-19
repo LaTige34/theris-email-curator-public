@@ -1,11 +1,11 @@
-"""Tests shadow_out — Phase 3 Lever 1 (alimentation shadow_judge.py).
+"""Tests shadow_out — alimentation loader externe (judge).
 
 Vérifie :
 - mask_phi appliqué avant écriture (subject, reasoning, draft_preview).
-- Format JSONL strictement aligné sur `load_hermes_shadow_outputs` consumer.
+- Format JSONL strictement aligné sur le loader externe consumer.
 - Rotation daily : un fichier `YYYY-MM-DD.jsonl` par jour.
 - Intégration tools/*.py : record_*_shadow() écrit bien dans shadow_out/.
-- Override THERIS_EMAIL_CURATOR_SHADOW_OUT env var (pour tests & staging).
+- Override EMAIL_CURATOR_SHADOW_OUT env var (pour tests & staging).
 - No-op safe si disque en lecture seule (pas de crash pipeline prod).
 """
 
@@ -63,14 +63,14 @@ class TestBuildRecord:
             thread_id="thr-001",
             tool="classify",
             category="URGENT",
-            subcategory="incident scalingo",
+            subcategory="incident infra",
             confidence=0.9,
-            reasoning="Scalingo prod down",
+            reasoning="Infra prod down",
             phi_detected=False,
             should_draft=False,
             telegram_priority="immediate",
             subject="Incident prod",
-            sender_domain="scalingo.com",
+            sender_domain="infra-provider.example.com",
         )
         # Schéma consommé par shadow_judge.load_hermes_shadow_outputs
         for k in (
@@ -107,7 +107,7 @@ class TestBuildRecord:
         assert len(r1["email_id_hash"]) == 16
 
     def test_theme_extracted_from_labels(self):
-        from lib.neo_labels import LABEL_PROCESSED, LABEL_URGENT, LABEL_WORK_MAIN
+        from lib.labels import LABEL_PROCESSED, LABEL_URGENT, LABEL_WORK_MAIN
         rec = build_shadow_record(
             thread_id="t",
             tool="labels",
@@ -116,7 +116,7 @@ class TestBuildRecord:
         assert rec["theme"] == LABEL_WORK_MAIN
 
     def test_no_theme_when_spam(self):
-        from lib.neo_labels import LABEL_PROCESSED, LABEL_SPAM
+        from lib.labels import LABEL_PROCESSED, LABEL_SPAM
         rec = build_shadow_record(
             thread_id="t",
             tool="labels",
@@ -220,7 +220,7 @@ class TestClassifyIntegration:
     def test_record_classification_shadow_writes_jsonl(self, tmp_shadow_dir):
         payload = {
             "category": "URGENT",
-            "subcategory": "Incident infra prod Scalingo",
+            "subcategory": "Incident infra prod",
             "confidence": 0.92,
             "reasoning": "App down depuis 5 minutes, déclencheur HTTP 503",
             "phi_detected": False,
@@ -231,8 +231,8 @@ class TestClassifyIntegration:
         assert ok
         fp = record_classification_shadow(
             thread_id="thr-incid-42",
-            subject="URGENT: Scalingo down",
-            sender_domain="scalingo.com",
+            subject="URGENT: Infra down",
+            sender_domain="infra-provider.example.com",
             classification=cls,
             provider="anthropic/claude-haiku-4-5",
             tokens_in=1500,
@@ -272,7 +272,7 @@ class TestApplyLabelsIntegration:
         rows = _read_all(fp)
         assert len(rows) == 1
         row = rows[0]
-        from lib.neo_labels import LABEL_DRAFT, LABEL_HR
+        from lib.labels import LABEL_DRAFT, LABEL_HR
         assert row["thread_id"] == "thr-cand-7"
         assert LABEL_DRAFT in row["label_applied"]
         assert row["theme"] == LABEL_HR
@@ -388,7 +388,7 @@ class TestMergeByThread:
         # Le dernier row (draft) contient TOUT via merge
         assert last["tool"] == "draft"
         assert last["category"] == "ACTION"
-        from lib.neo_labels import LABEL_DRAFT, LABEL_HR
+        from lib.labels import LABEL_DRAFT, LABEL_HR
         assert last["confidence"] == 0.9  # hérité du classify
         assert LABEL_DRAFT in last["label_applied"]  # hérité du labels
         assert last["theme"] == LABEL_HR

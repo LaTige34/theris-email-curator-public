@@ -69,7 +69,7 @@ _TEMPLATES: dict[str, str] = {
         "Pourriez-vous me proposer 2 à 3 créneaux de RDV téléphonique ou "
         "visioconférence dans les 7 jours à venir ?"
     ),
-    "info_commerciale_theris": (
+    "info_commerciale": (
         "Merci pour votre intérêt.\n\n"
         "Vous pouvez consulter notre présentation et nos fonctionnalités sur "
         "<YOUR_WEBSITE>. Pour une démo produit personnalisée ou un devis, je "
@@ -115,9 +115,8 @@ _ROUTING: list[tuple[str, str]] = [
     ("candidature", "candidature_soignant"),
     ("admission", "admission_ehpad"),
     ("famille", "question_famille"),
-    ("info commerciale", "info_commerciale_theris"),
-    ("info theris", "info_commerciale_theris"),
-    ("demande info", "info_commerciale_theris"),
+    ("info commerciale", "info_commerciale"),
+    ("demande info", "info_commerciale"),
     ("devis fournisseur", "devis_petit"),
     ("devis", "devis_petit"),
     ("relance impay", "relance_impayee_amiable"),

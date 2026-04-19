@@ -1,24 +1,18 @@
 """Tests routeur labels Gmail curator/*.
 
 Inclut les régressions anti-faux-positif WORK_OPS + SPAM single-label.
-Les aliases historiques (LABEL_BELLEVISTE = LABEL_WORK_OPS, etc.) sont
-exposés pour maintenir les tests de routage par mot-clé secteur santé.
 """
 
 from __future__ import annotations
 
 import pytest
 
-from lib.neo_labels import (
-    LABEL_BELLEVISTE,  # alias WORK_OPS — régressions patterns santé
+from lib.labels import (
     LABEL_DRAFT,
     LABEL_HR,
     LABEL_PERSONAL,
-    LABEL_PERSO,  # alias PERSONAL
     LABEL_PROCESSED,
-    LABEL_RH,  # alias HR
     LABEL_SPAM,
-    LABEL_THERIS,  # alias WORK_MAIN
     LABEL_URGENT,
     LABEL_WORK_MAIN,
     LABEL_WORK_OPS,
@@ -27,13 +21,13 @@ from tools.apply_labels import route_labels
 
 
 def test_urgent_pattern_match_gets_urgent_plus_work_main():
-    """Pattern 'scalingo' matche WORK_MAIN via les patterns infra."""
+    """Pattern 'postgrest' matche WORK_MAIN via les patterns infra."""
     labels = route_labels(
         category="URGENT",
-        subcategory="Incident technique critique scalingo prod",
+        subcategory="Incident technique critique postgrest prod",
         should_draft=False,
         sender_domain="github.com",
-        subject="Deploy failed scalingo",
+        subject="Deploy failed postgrest",
     )
     assert LABEL_PROCESSED in labels
     assert LABEL_URGENT in labels
@@ -41,10 +35,10 @@ def test_urgent_pattern_match_gets_urgent_plus_work_main():
 
 
 def test_urgent_ars_gets_urgent_plus_work_ops():
-    """Pattern 'ars occitanie' / 'medecin coord' matche WORK_OPS (santé)."""
+    """Pattern 'ars <region>' / 'medecin coord' matche WORK_OPS (santé)."""
     labels = route_labels(
         category="URGENT",
-        subcategory="ARS Occitanie signalement EIG",
+        subcategory="ARS regionale signalement EIG",
         should_draft=False,
         sender_domain="ars.sante.fr",
         subject="Déclaration EIG — medecin coordonnateur",
@@ -192,10 +186,3 @@ def test_processed_always_applied():
             subject="test",
         )
         assert LABEL_PROCESSED in labels
-
-
-def test_legacy_aliases_equivalent_to_new_constants():
-    assert LABEL_BELLEVISTE == LABEL_WORK_OPS
-    assert LABEL_THERIS == LABEL_WORK_MAIN
-    assert LABEL_RH == LABEL_HR
-    assert LABEL_PERSO == LABEL_PERSONAL

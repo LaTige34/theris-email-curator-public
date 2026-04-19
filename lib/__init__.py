@@ -1,1 +1,1 @@
-"""theris-email-curator lib (labels, senders, helpers)."""
+"""email-curator lib (labels, senders, helpers)."""

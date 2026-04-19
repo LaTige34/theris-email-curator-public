@@ -63,7 +63,7 @@ visioconférence dans les 7 jours à venir ?
 ```
 Routage : subcategory contient "médecin coord" / "medecin coord".
 
-### 3. info_commerciale_theris (renommer selon produit)
+### 3. info_commerciale (renommer selon produit)
 ```
 Merci pour votre intérêt.
 

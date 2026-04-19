@@ -1,1 +1,1 @@
-"""theris-email-curator tests."""
+"""email-curator tests."""

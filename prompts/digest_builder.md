@@ -37,7 +37,7 @@ _18 avril 2026 · 14:35_
 🟢 *À LIRE* (2)
 
 🟦 *Facture hébergement réglée*
-   _notification paiement_ · `scalingo.com` · [📂](link)
+   _notification paiement_ · `infra-provider.example.com` · [📂](link)
 📡 *Newsletter sectorielle*
    _newsletter_ · `newsletter.example.com` · [📂](link)
 ```
@@ -47,7 +47,7 @@ _18 avril 2026 · 14:35_
 ### Activité principale (exemples, à adapter)
 - `prospect`, `pilote` → 🎯
 - `investisseur` → 💼
-- `scalingo`, `ovh`, `hetzner` → 🟦
+- `ovh`, `hetzner` → 🟦
 
 ### Santé / EHPAD (optionnel)
 - `idec`, `medecin`, `résident`, `ars` → 🏥
