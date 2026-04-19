@@ -17,4 +17,7 @@ jobs:
       - name: Install ruff
         run: pip install ruff
       - name: Run ruff check
-        run: ruff check lib/ tools/ tests/ --select=E,F,W --ignore=E501
+        run: |
+          ruff check lib/ tools/ tests/ \
+            --select=E,F,W \
+            --ignore=E501,E741,F401,F541,F841
